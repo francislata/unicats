@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unicats"
+version = "0.1.0"
+dependencies = [
+    "lightning",
+    "torch",
+]
+
+[tool.setuptools.packages]
+find = {}
