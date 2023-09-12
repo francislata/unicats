@@ -17,6 +17,25 @@ def _one_context_config(audio: torch.Tensor, context_length: int, hop_length: in
         context_end_length
     )
 
+def _two_context_config(audio: torch.Tensor, min_input_frames: int, hop_length: int) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, int]:
+    min_input_length = min_input_frames * hop_length
+
+    if audio.size(-1) < min_input_length:
+        raise ValueError("audio length is shorter than minimum input length")
+
+    input_length = torch.randint(min_input_length, audio.size(-1) - min_input_length, (1,)).item()
+    input_start_idx = torch.randint(0, audio.size(-1) - input_length, (1,)).item()
+    input_audio = audio[..., input_start_idx:input_start_idx + input_length]
+    a_context_audio = audio[..., :input_start_idx]
+    b_context_audio = audio[..., input_start_idx + input_length:]
+
+    return (
+        a_context_audio,
+        input_audio,
+        b_context_audio,
+        input_start_idx
+    )
+
 
 def slice_audio(au: torch.Tensor):
     # TODO:
