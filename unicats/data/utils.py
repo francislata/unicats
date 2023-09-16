@@ -37,8 +37,12 @@ def _two_context_config(audio: torch.Tensor, min_input_frames: int, hop_length: 
     )
 
 
-def slice_audio(au: torch.Tensor):
-    # TODO:
-    # 1) Define which configuration is used randomly. Perform some weighted random probability.
-    # 2) Once chosen, call that config.
-    pass
+def slice_audio(audio: torch.Tensor, context_length: int, hop_length: int, min_input_frames: int):
+    selected_config_index = torch.randint(2, (1,)).item()
+
+    if selected_config_index == 0:
+        return _two_context_config(audio, min_input_frames, hop_length)
+    elif selected_config_index == 1:
+        return _one_context_config(audio, context_length, hop_length)
+    else:
+        return (audio, audio.size(-1))
