@@ -43,7 +43,7 @@ def _move_test_utterances(
 def main():
     parser = argparse.ArgumentParser(
         prog="LibriTTS test set splitter",
-        usage="This is used to generate the test sets specified in the UniCATS paper.",
+        usage="This is used to generate the test sets specified in the UniCATS paper."
     )
 
     parser.add_argument(

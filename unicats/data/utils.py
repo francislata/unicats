@@ -46,3 +46,10 @@ def slice_audio(audio: torch.Tensor, context_length: int, hop_length: int, min_i
         return _one_context_config(audio, context_length, hop_length)
     else:
         return (audio, audio.size(-1))
+    
+def collate_fn(batch):
+    # TODO: Ensure batch is of equal length to the longest sequence.
+    # Afterwards, randomly select which config to use (might need to modify slice_audio)
+    # and then also pass in the mask to use.
+    for sample in batch:
+        print(sample.shape)

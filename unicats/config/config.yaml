@@ -1,0 +1,10 @@
+dataset:
+  dataset_dir: null
+  sample_rate: 22050
+  hop_size: 256
+  num_frames: 88
+
+  dataloader:
+    batch_size: 32
+    shuffle: true
+    num_workers: 8

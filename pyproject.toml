@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "unicats"
 version = "0.1.0"
 dependencies = [
-    "lightning",
     "torch",
+    "hydra-core",
 ]
 
 [tool.setuptools.packages]
