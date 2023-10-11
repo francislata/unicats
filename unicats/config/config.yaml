@@ -1,5 +1,9 @@
 dataset:
-  dataset_dir: null
+  dataset_root_dir: null
+  dataset_folder_names:
+    - train-clean-100
+    - train-clean-360
+    - train-other-500
   sample_rate: 22050
   hop_size: 256
   num_frames: 88

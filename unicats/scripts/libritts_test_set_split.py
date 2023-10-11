@@ -71,6 +71,7 @@ def main():
     args = parser.parse_args()
 
     test_utterances = _parse_test_utterances(args.utterance_split_file)
+
     _move_test_utterances(test_utterances, args.dataset_path, args.test_set_path, dry_run=args.dry_run)
 
 
