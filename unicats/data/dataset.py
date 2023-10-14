@@ -30,7 +30,7 @@ class LibriTTSDataset(data.Dataset):
         self.num_frames = num_frames
         self.sample_rate = sample_rate
 
-    def __getitem__(self, index: int) -> np.ndarray:
+    def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray]:
         utterance = self.utterances[index]
         context_config = self.context_configs[index]
 
