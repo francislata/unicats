@@ -40,5 +40,4 @@ def collate_fn(batch):
     # TODO: Ensure batch is of equal length to the longest sequence.
     # Afterwards, randomly select which config to use (might need to modify slice_audio)
     # and then also pass in the mask to use.
-    for sample in batch:
-        print(sample.shape)
+    pass
