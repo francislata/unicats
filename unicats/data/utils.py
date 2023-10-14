@@ -2,7 +2,7 @@ from typing import Tuple
 
 import torch
 
-def _one_context_config(audio: torch.Tensor, context_length: int, hop_size: int) -> Tuple[torch.Tensor, torch.Tensor, int]:
+def one_context_config(audio: torch.Tensor, context_length: int, hop_size: int) -> Tuple[torch.Tensor, torch.Tensor, int]:
     audio_length = context_length * hop_size
     # TODO: consider moving the sequence length selection to be passed in as arguments
     sequence_length = torch.randint(2, 4, (1,)).item()
@@ -17,7 +17,7 @@ def _one_context_config(audio: torch.Tensor, context_length: int, hop_size: int)
         context_end_length
     )
 
-def _two_context_config(audio: torch.Tensor, min_input_frames: int, hop_size: int) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, int]:
+def two_context_config(audio: torch.Tensor, min_input_frames: int, hop_size: int) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, int]:
     min_input_length = min_input_frames * hop_size
 
     if audio.size(-1) < min_input_length:
@@ -35,17 +35,6 @@ def _two_context_config(audio: torch.Tensor, min_input_frames: int, hop_size: in
         b_context_audio,
         input_start_idx
     )
-
-
-def slice_audio(audio: torch.Tensor, context_length: int, hop_size: int, min_input_frames: int):
-    selected_config_index = torch.randint(2, (1,)).item()
-
-    if selected_config_index == 0:
-        return _two_context_config(audio, min_input_frames, hop_size)
-    elif selected_config_index == 1:
-        return _one_context_config(audio, context_length, hop_size)
-    else:
-        return (audio, audio.size(-1))
     
 def collate_fn(batch):
     # TODO: Ensure batch is of equal length to the longest sequence.

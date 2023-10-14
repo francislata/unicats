@@ -1,4 +1,4 @@
-from unicats.data.utils import _one_context_config, _two_context_config
+from unicats.data.utils import one_context_config, two_context_config
 
 import torch
 import unittest
@@ -15,12 +15,12 @@ class TestSliceAudio(unittest.TestCase):
         audio = torch.randn((4, 1, 11264))
 
         with self.assertRaises(ValueError):
-            _one_context_config(audio, self.context_length, self.hop_length)
+            one_context_config(audio, self.context_length, self.hop_length)
 
     def test_slice_audio_one_context(self):
         audio = torch.randn((4, 1, 135168))
 
-        context_audio, target_audio, context_end_length = _one_context_config(
+        context_audio, target_audio, context_end_length = one_context_config(
             audio,
             self.context_length,
             self.hop_length
@@ -33,12 +33,12 @@ class TestSliceAudio(unittest.TestCase):
         audio = torch.randn((4, 1, 11264))
 
         with self.assertRaises(ValueError):
-            _two_context_config(audio, self.context_length, self.hop_length)
+            two_context_config(audio, self.context_length, self.hop_length)
 
     def test_slice_audio_two_context(self):
         audio = torch.randn((4, 1, 135168))
 
-        a_context_audio, input_audio, b_context_audio, input_start_idx = _two_context_config(
+        a_context_audio, input_audio, b_context_audio, input_start_idx = two_context_config(
             audio,
             self.context_length,
             self.hop_length

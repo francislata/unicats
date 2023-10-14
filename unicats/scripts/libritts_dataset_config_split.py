@@ -1,5 +1,5 @@
 from glob import glob
-from typing import List
+from typing import List, Tuple
 
 import argparse
 import os
@@ -18,17 +18,24 @@ def _load_utterances(dataset_path: str, au_format: str) -> List[str]:
 
     return utterances
 
-def _assign_utterance_configs(
-    utterances: List[str],
-    two_context_config_percentage: float,
-    one_context_config_percentage: float,
-    no_context_config_percentage: float
-):
+def _assign_utterance_context(utterances: List[str], two_context_config_percentage: float, one_context_config_percentage: float) -> Tuple[List[str], List[str], List[str]]:
+    if two_context_config_percentage + one_context_config_percentage >= 1.0:
+        raise ValueError("sum of two_context_config_percentage and one_context_config_percentage is greater than 1.0")
+
     two_context_count = round(len(utterances) * two_context_config_percentage)
     one_context_count = round(len(utterances) * one_context_config_percentage)
-    no_context_count = round(len(utterances) * no_context_config_percentage)
 
-    print(f"--total: {len(utterances)} ---two: {two_context_count} --one: {one_context_count} --zero: {no_context_count}")
+    two_context_utterances = utterances[:two_context_count]
+    one_context_utterances = utterances[two_context_count:two_context_count + one_context_count]
+    no_context_utterances = utterances[two_context_count + one_context_count:]
+
+    return (no_context_utterances, one_context_utterances, two_context_utterances)
+
+def _create_utterance_config_file(utterance_contexts: Tuple[List[str], List[str], List[str]], utterance_config_file_path: str):
+    with open(utterance_config_file_path, "w") as utterance_config_fp:
+        for index, utterance_context in enumerate(utterance_contexts):
+            for utterance in utterance_context:
+                utterance_config_fp.write(f"{utterance},{index}\n")
 
 
 def main():
@@ -54,15 +61,15 @@ def main():
         type=float
     )
     parser.add_argument(
-        "--no_context_config_percentage",
-        help="the percentage of the dataset that should use the no context configuration",
-        default=0.1,
-        type=float
-    )
-    parser.add_argument(
         "--au_format",
         help="the audio format of the utterances",
         default="wav",
+        type=str
+    )
+    parser.add_argument(
+        "--utterance_config_file_path",
+        help="the file path for the utterance config",
+        default="./utterance_config.csv",
         type=str
     )
 
@@ -70,12 +77,13 @@ def main():
 
     utterances = _load_utterances(args.dataset_path, args.au_format)
 
-    _assign_utterance_configs(
+    utterance_contexts = _assign_utterance_context(
         utterances,
         args.two_context_config_percentage,
-        args.one_context_config_percentage,
-        args.no_context_config_percentage
+        args.one_context_config_percentage
     )
+
+    _create_utterance_config_file(utterance_contexts, args.utterance_config_file_path)
 
 if __name__ == "__main__":
     main()
