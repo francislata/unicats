@@ -25,20 +25,22 @@ from tensorboardX import SummaryWriter
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-import ctx_vec2wav
-import ctx_vec2wav.models
-import ctx_vec2wav.optimizers
+import unicats
+import unicats.models
+import unicats.optimizers
 
-from ctx_vec2wav.datasets import AudioMelSCPDataset
-from ctx_vec2wav.layers import PQMF
-from ctx_vec2wav.losses import DiscriminatorAdversarialLoss
-from ctx_vec2wav.losses import FeatureMatchLoss
-from ctx_vec2wav.losses import GeneratorAdversarialLoss
-from ctx_vec2wav.losses import MelSpectrogramLoss
-from ctx_vec2wav.losses import MultiResolutionSTFTLoss
-from ctx_vec2wav.utils import crop_seq
+from unicats.datasets import AudioMelSCPDataset
+from unicats.layers import PQMF
+from unicats.losses import DiscriminatorAdversarialLoss
+from unicats.losses import FeatureMatchLoss
+from unicats.losses import GeneratorAdversarialLoss
+from unicats.losses import MelSpectrogramLoss
+from unicats.losses import MultiResolutionSTFTLoss
+from unicats.utils import crop_seq
 
-from ctx_vec2wav.utils.espnet_utils import pad_list, make_non_pad_mask
+from unicats.utils.espnet_utils import pad_list, make_non_pad_mask
+
+from unicats.data.utils import ContextCollator
 
 # set to avoid matplotlib error in CLI environment
 matplotlib.use("Agg")
@@ -695,7 +697,7 @@ class Collator(object):
 def main():
     """Run training process."""
     parser = argparse.ArgumentParser(
-        description="Train Parallel WaveGAN (See detail in ctx_vec2wav/bin/train.py)."
+        description="Train UniCATS (See detail in unicats/bin/train.py)."
     )
     parser.add_argument(
         "--train-wav-scp",
@@ -903,7 +905,7 @@ def main():
     with open(args.config) as f:
         config = yaml.load(f, Loader=yaml.Loader)
     config.update(vars(args))
-    config["version"] = ctx_vec2wav.__version__  # add version info
+    config["version"] = unicats.__version__  # add version info
     with open(os.path.join(args.outdir, "config.yml"), "w") as f:
         yaml.dump(config, f, Dumper=yaml.Dumper)
     for key, value in config.items():
@@ -944,6 +946,7 @@ def main():
     }
 
     # get data loader
+    # TODO: setup ContextCollator based on training config
     collator = Collator(
         hop_size=config["hop_size"],
         win_length=config["win_length"],
@@ -988,18 +991,18 @@ def main():
 
     # define models
     generator_class = getattr(
-        ctx_vec2wav.models,
+        unicats.models,
         # keep compatibility
         config.get("generator_type", "ParallelWaveGANGenerator"),
     )
     discriminator_class = getattr(
-        ctx_vec2wav.models,
+        unicats.models,
         # keep compatibility
         config.get("discriminator_type", "ParallelWaveGANDiscriminator"),
     )
     model = {
-        "generator": ctx_vec2wav.models.CTXVEC2WAVGenerator(
-            ctx_vec2wav.models.CTXVEC2WAVFrontend(config["num_mels"], **config["frontend_params"]),
+        "generator": unicats.models.CTXVEC2WAVGenerator(
+            unicats.models.CTXVEC2WAVFrontend(config["num_mels"], **config["frontend_params"]),
             generator_class(**config["generator_params"])
         ).to(device),
         "discriminator": discriminator_class(
@@ -1066,12 +1069,12 @@ def main():
 
     # define optimizers and schedulers
     generator_optimizer_class = getattr(
-        ctx_vec2wav.optimizers,
+        unicats.optimizers,
         # keep compatibility
         config.get("generator_optimizer_type", "RAdam"),
     )
     discriminator_optimizer_class = getattr(
-        ctx_vec2wav.optimizers,
+        unicats.optimizers,
         # keep compatibility
         config.get("discriminator_optimizer_type", "RAdam"),
     )

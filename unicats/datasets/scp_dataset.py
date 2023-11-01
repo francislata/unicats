@@ -15,8 +15,8 @@ import numpy as np
 
 from torch.utils.data import Dataset
 from tqdm import tqdm
-from ctx_vec2wav.utils import HDF5ScpLoader
-from ctx_vec2wav.utils import NpyScpLoader
+from unicats.utils import HDF5ScpLoader
+from unicats.utils import NpyScpLoader
 
 
 def _get_feats_scp_loader(feats_scp):

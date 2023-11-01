@@ -7,28 +7,28 @@
 import logging
 import torch
 
-from ctx_vec2wav.models.conformer.convolution import ConvolutionModule
-from ctx_vec2wav.models.conformer.decoder_layer import DecoderLayer
-from ctx_vec2wav.models.conformer.nets_utils import get_activation
-from ctx_vec2wav.models.conformer.vgg2l import VGG2L
-from ctx_vec2wav.models.conformer.attention import (
+from unicats.models.conformer.convolution import ConvolutionModule
+from unicats.models.conformer.decoder_layer import DecoderLayer
+from unicats.models.conformer.nets_utils import get_activation
+from unicats.models.conformer.vgg2l import VGG2L
+from unicats.models.conformer.attention import (
     MultiHeadedAttention,  # noqa: H301
     RelPositionMultiHeadedAttention,  # noqa: H301
     LegacyRelPositionMultiHeadedAttention,  # noqa: H301
 )
-from ctx_vec2wav.models.conformer.embedding import (
+from unicats.models.conformer.embedding import (
     PositionalEncoding,  # noqa: H301
     ScaledPositionalEncoding,  # noqa: H301
     RelPositionalEncoding,  # noqa: H301
     LegacyRelPositionalEncoding,  # noqa: H301
 )
-from ctx_vec2wav.models.conformer.layer_norm import LayerNorm
-from ctx_vec2wav.models.conformer.multi_layer_conv import Conv1dLinear, MultiLayeredConv1d
-from ctx_vec2wav.models.conformer.positionwise_feed_forward import (
+from unicats.models.conformer.layer_norm import LayerNorm
+from unicats.models.conformer.multi_layer_conv import Conv1dLinear, MultiLayeredConv1d
+from unicats.models.conformer.positionwise_feed_forward import (
     PositionwiseFeedForward,  # noqa: H301
 )
-from ctx_vec2wav.models.conformer.repeat import repeat
-from ctx_vec2wav.models.conformer.subsampling import Conv2dSubsampling
+from unicats.models.conformer.repeat import repeat
+from unicats.models.conformer.subsampling import Conv2dSubsampling
 
 
 class Decoder(torch.nn.Module):

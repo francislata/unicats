@@ -13,8 +13,8 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from ctx_vec2wav.layers import HiFiGANResidualBlock as ResidualBlock
-from ctx_vec2wav.utils import read_hdf5
+from unicats.layers import HiFiGANResidualBlock as ResidualBlock
+from unicats.utils import read_hdf5
 
 
 class HiFiGANGenerator(torch.nn.Module):

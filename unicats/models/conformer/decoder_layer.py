@@ -11,7 +11,7 @@ import torch
 
 from torch import nn
 
-from ctx_vec2wav.models.conformer.layer_norm import LayerNorm
+from unicats.models.conformer.layer_norm import LayerNorm
 
 
 class DecoderLayer(nn.Module):

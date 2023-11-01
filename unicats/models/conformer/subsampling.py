@@ -8,7 +8,7 @@
 
 import torch
 
-from ctx_vec2wav.models.conformer.embedding import PositionalEncoding
+from unicats.models.conformer.embedding import PositionalEncoding
 
 
 class TooShortUttError(Exception):

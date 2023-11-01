@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import torch
-from ctx_vec2wav.models.conformer.decoder import Decoder as ConformerDecoder
-from ctx_vec2wav.utils import crop_seq
-from ctx_vec2wav.models.hifigan import HiFiGANGenerator
+from unicats.models.conformer.decoder import Decoder as ConformerDecoder
+from unicats.utils import crop_seq
+from unicats.models.hifigan import HiFiGANGenerator
 
 
 class CTXVEC2WAVFrontend(torch.nn.Module):

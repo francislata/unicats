@@ -3,7 +3,7 @@
 # Copyright 2020 Tomoki Hayashi
 #  MIT License (https://opensource.org/licenses/MIT)
 
-. ./cmd.sh || exit 1;
+. ./scripts/cmd.sh || exit 1;
 # . ./path.sh || exit 1;
 
 # basic settings
@@ -49,7 +49,7 @@ eval_set="eval_${part}"
 . parse_options.sh || exit 1;
 
 set -eo pipefail
-chmod +x ctx_vec2wav/bin/train.py ctx_vec2wav/bin/decode.py
+chmod +x unicats/bin/train.py unicats/bin/decode.py
 
 vqdir=feats/vqidx/
 

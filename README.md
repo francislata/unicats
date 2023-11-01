@@ -17,3 +17,13 @@ This project is using the **LibriTTS dataset** in the 24 kHz sampling rate. To f
 ## Credits
 - [VQ Diffusion](https://github.com/microsoft/VQ-Diffusion) by Microsoft
 - [UniCATS-CTX-vec2wav](https://github.com/cantabile-kwok/UniCATS-CTX-vec2wav) by [cantabile-kwok](https://github.com/cantabile-kwok)
+
+## Citation
+```
+@article{du2023unicats,
+  title={UniCATS: A Unified Context-Aware Text-to-Speech Framework with Contextual VQ-Diffusion and Vocoding},
+  author={Du, Chenpeng and Guo, Yiwei and Shen, Feiyu and Liu, Zhijun and Liang, Zheng and Chen, Xie and Wang, Shuai and Zhang, Hui and Yu, Kai},
+  journal={arXiv preprint arXiv:2306.07547},
+  year={2023}
+}
+```
