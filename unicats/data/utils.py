@@ -5,25 +5,44 @@ import random
 import torch
 
 
-def one_context_config(au: torch.Tensor, hop_size: int, sampling_rate: int) -> tuple[torch.Tensor, torch.Tensor]:
+def one_context_config(
+    au: torch.Tensor,
+    hop_size: int,
+    sampling_rate: int
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     ctx_min_frame_length = int(2 * sampling_rate / hop_size)
     ctx_max_frame_length = int(3 * sampling_rate / hop_size)
     ctx_frame_length = random.randint(ctx_min_frame_length, ctx_max_frame_length)
 
+    ctx_ind = np.zeros((au.shape[0],), dtype=np.int8)
+    ctx_ind[ctx_frame_length:] = 1
+
     return (
         au[:ctx_frame_length],
-        au[ctx_frame_length:]
+        au[ctx_frame_length:],
+        ctx_ind
     )
 
-def two_context_config(au: torch.Tensor, min_input_frames: int, hop_size: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    input_max_frame_length = (au.shape[-1] // hop_size) - min_input_frames
+def two_context_config(
+    au: torch.Tensor,
+    min_input_frames: int,
+    hop_size: int
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    input_max_frame_length = (au.shape[0] // hop_size) - min_input_frames
     input_frame_length = random.randint(min_input_frames, input_max_frame_length)
     input_start_frame = random.randint(0, input_max_frame_length)
 
+    ctx_start_idx = input_start_frame * hop_size
+    ctx_end_idx = (input_start_frame + input_frame_length) * hop_size
+
+    ctx_ind = np.zeros((au.shape[0],), dtype=np.int8)
+    ctx_ind[ctx_start_idx:ctx_end_idx] = 1
+
     return (
-        au[:input_start_frame * hop_size],
-        au[input_start_frame * hop_size:(input_start_frame + input_frame_length) * hop_size],
-        au[(input_start_frame + input_frame_length) * hop_size:]
+        au[:ctx_start_idx],
+        au[ctx_start_idx:ctx_end_idx],
+        au[ctx_end_idx:],
+        ctx_ind
     )
 
 
@@ -59,6 +78,6 @@ class ContextCollator(object):
             elif ctx_config_index == 1:
                 aus.append(one_context_config(input[0], self.hop_size, self.sampling_rate))
             else:
-                aus.append(input[0])
+                aus.append((input[0], np.ones(input.shape[0], dtype=np.int8)))
 
         return None

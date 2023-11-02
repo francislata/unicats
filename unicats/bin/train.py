@@ -40,8 +40,6 @@ from unicats.utils import crop_seq
 
 from unicats.utils.espnet_utils import pad_list, make_non_pad_mask
 
-from unicats.data.utils import ContextCollator
-
 # set to avoid matplotlib error in CLI environment
 matplotlib.use("Agg")
 
