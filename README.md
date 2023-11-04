@@ -5,6 +5,8 @@ This project is an unofficial implementation of [UniCATS](https://arxiv.org/pdf/
 
 Please note that as the official implementation has been [released](https://github.com/cantabile-kwok/UniCATS-CTX-vec2wav) for the CTX-vec2wav model, this repository will be using the same setup. This provides consistency and compatibility for future updates to the project.
 
+**Note:** Please refer to the official implementations of [CTX-text2vec](https://github.com/cantabile-kwok/UniCATS-CTX-text2vec) and [CTX-vec2wav](https://github.com/cantabile-kwok/UniCATS-CTX-vec2wav).
+
 ## Setup
 To get started, run the following after going inside the repository's root directory:
 ```shell
